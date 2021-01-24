@@ -29,6 +29,7 @@ private:
 
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
+
 	bool m_playerFacingRight;
 
 	// UI Items

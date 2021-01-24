@@ -56,6 +56,14 @@ void PlayScene::handleEvents()
 				m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
 				m_playerFacingRight = false;
 			}
+			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y > deadZone)
+			{
+				m_pPlayer->setAnimationState(PLAYER_RUN_UP);
+			}
+			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y < -deadZone)
+			{
+				m_pPlayer->setAnimationState(PLAYER_RUN_DOWN);
+			}
 			else
 			{
 				if (m_playerFacingRight)
@@ -83,6 +91,14 @@ void PlayScene::handleEvents()
 		{
 			m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
 			m_playerFacingRight = true;
+		}
+		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_X))
+		{
+			m_pPlayer->setAnimationState(PLAYER_RUN_DOWN);
+		}
+		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
+		{
+			m_pPlayer->setAnimationState(PLAYER_RUN_UP);
 		}
 		else
 		{

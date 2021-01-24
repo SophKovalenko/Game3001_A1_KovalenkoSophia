@@ -45,12 +45,12 @@ void StartScene::handleEvents()
 
 void StartScene::start()
 {
-	const SDL_Color green = { 0, 139, 34, 0 };
-	m_pStartLabel = new Label("START SCENE", "Consolas", 80, green, glm::vec2(400.0f, 40.0f));
+	const SDL_Color mag = { 200, 0, 100, 0 };
+	m_pStartLabel = new Label("START SCENE", "Consolas", 80, mag, glm::vec2(400.0f, 40.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, green, glm::vec2(400.0f, 120.0f));
+	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, mag, glm::vec2(400.0f, 120.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 
@@ -59,10 +59,9 @@ void StartScene::start()
 	m_pStudentLabel->setParent(this);
 	addChild(m_pStudentLabel);
 
-	m_pShip = new Ship();
+	/*m_pShip = new Ship();
 	m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
-	// change this to if statement (if user presses button sprite appears)
-	//addChild(m_pShip); 
+	addChild(m_pShip); */
 
 	// Start Button
 	m_pStartButton = new Button();
