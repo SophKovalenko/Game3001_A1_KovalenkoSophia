@@ -45,15 +45,19 @@ void StartScene::handleEvents()
 
 void StartScene::start()
 {
-	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_pStartLabel = new Label("START SCENE", "Consolas", 80, blue, glm::vec2(400.0f, 40.0f));
+	const SDL_Color green = { 0, 139, 34, 0 };
+	m_pStartLabel = new Label("START SCENE", "Consolas", 80, green, glm::vec2(400.0f, 40.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, blue, glm::vec2(400.0f, 120.0f));
+	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, green, glm::vec2(400.0f, 120.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 
+	const SDL_Color lime = { 0, 255, 0, 255 };
+	m_pStudentLabel = new Label("Sophia Kovalenko - 101333565", "Consolas", 40, lime, glm::vec2(400.0f, 550.0f));
+	m_pStudentLabel->setParent(this);
+	addChild(m_pStudentLabel);
 
 	m_pShip = new Ship();
 	m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
