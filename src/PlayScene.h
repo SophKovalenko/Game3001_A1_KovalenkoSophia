@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include "Ufo.h"
 #include "Target.h"
-//#include "Player.h"
+#include "Background.h"
 #include "Button.h"
 #include "Label.h"
 
@@ -30,8 +30,14 @@ private:
 	
 	glm::vec2 m_mousePosition;
 
+	//sound effect objects
+	//Mix_Chunk* m_collide;
+	//Music track object
+	//Mix_Music* m_maintrack;
+
 	Ufo* m_pUfo;
 	Target* m_pTarget;
+	Background* m_pBackground;
 
 	// UI Items
 	Button* m_pBackButton;

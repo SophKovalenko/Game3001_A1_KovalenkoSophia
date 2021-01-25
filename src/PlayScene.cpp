@@ -61,6 +61,10 @@ void PlayScene::start()
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 
+	m_pBackground = new Background();
+	m_pBackground->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	addChild(m_pBackground);
+
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = glm::vec2(400.0f, 300.0f);
 	addChild(m_pTarget);
@@ -68,6 +72,7 @@ void PlayScene::start()
 	m_pUfo = new Ufo();
 	m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
 	m_pUfo->setEnabled(false);
+	m_pUfo->setDestination(m_pTarget->getTransform()->position);
 	addChild(m_pUfo);
 
 	// Back Button
