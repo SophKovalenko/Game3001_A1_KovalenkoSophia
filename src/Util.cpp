@@ -175,6 +175,13 @@ float Util::RandomRange(const float min, const float max)
 	return min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max - min)));
 }
 
+glm::vec2 Util::RandomRange(const glm::vec2 p0, const glm::vec2 p1) // part of wandering algorithim
+{
+	const auto random_x = RandomRange(p0.x, p1.x);
+	const auto random_y = RandomRange(p0.y, p1.y);
+	return glm::vec2(random_x, random_y);
+}
+
 /**
 * This Utility function checks to see if a number is very small (close to EPSILON)
 * If so, it changes the value to 0.0;

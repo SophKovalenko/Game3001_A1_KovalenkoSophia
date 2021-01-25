@@ -3,9 +3,9 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-#include "Plane.h"
-#include "Ship.h"
-#include "Player.h"
+#include "Ufo.h"
+#include "Target.h"
+//#include "Player.h"
 #include "Button.h"
 #include "Label.h"
 
@@ -22,17 +22,16 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 private:
+	//const Uint8* m_keystates;
+
 	// IMGUI Function
 	void GUI_Function() const;
 	std::string m_guiTitle;
 	
 	glm::vec2 m_mousePosition;
 
-	Ship* m_pShipSprite;
-	Plane* m_pPlaneSprite;
-	Player* m_pPlayer;
-
-	bool m_playerFacingRight;
+	Ufo* m_pUfo;
+	Target* m_pTarget;
 
 	// UI Items
 	Button* m_pBackButton;
