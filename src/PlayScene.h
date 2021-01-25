@@ -4,6 +4,7 @@
 
 #include "Scene.h"
 #include "Plane.h"
+#include "Ship.h"
 #include "Player.h"
 #include "Button.h"
 #include "Label.h"
@@ -27,6 +28,7 @@ private:
 	
 	glm::vec2 m_mousePosition;
 
+	Ship* m_pShipSprite;
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 

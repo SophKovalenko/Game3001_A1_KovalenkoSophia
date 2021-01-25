@@ -132,6 +132,13 @@ float Util::lerp(const float a, const float b, const float t)
 	return a + (b - a) * Util::clamp01(t);
 }
 
+glm::vec2 Util::lerp(const glm::vec2 p0, const glm::vec2 p1, const float t)
+{
+	const auto lerpXs = lerp(p0.x, p1.x, t);
+	const auto lerpYs = lerp(p0.y, p1.y, t);
+	return glm::vec2(lerpXs, lerpYs);
+}
+
 /**
 	 * Lerps between a and b at some t value - unclamped.
 *

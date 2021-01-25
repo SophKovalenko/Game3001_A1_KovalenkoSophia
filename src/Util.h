@@ -25,6 +25,9 @@ public:
 	static float squaredMagnitude(glm::vec2 vec);
 	static glm::vec2 limitMagnitude(glm::vec2 vector, float magnitude);
 	static float lerp(float a, float b, float t);
+
+	static glm::vec2 lerp(glm::vec2 p0, glm::vec2 p1, float t);
+
 	static float lerpUnclamped(float a, float b, float t);
 	static float lerpAngle(float a, float b, float t);
 	static float repeat(float t, float length);

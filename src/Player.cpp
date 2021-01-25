@@ -5,7 +5,8 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 {
 	TextureManager::Instance()->loadSpriteSheet(
 		"../Assets/sprites/atlas.txt",
-		"../Assets/sprites/atlas.png", 
+		"../Assets/sprites/atlas.png",
+		//"../Assets/sprites/runplayer.png"
 		"spritesheet");
 
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("spritesheet"));
@@ -90,7 +91,7 @@ void Player::clean()
 
 void Player::setAnimationState(const PlayerAnimationState new_state)
 {
-	m_currentAnimationState = new_state;
+	//m_currentAnimationState = new_state;
 }
 
 void Player::m_buildAnimations()

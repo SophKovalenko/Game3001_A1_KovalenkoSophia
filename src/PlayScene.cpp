@@ -135,6 +135,7 @@ void PlayScene::start()
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 	
+	
 	// Plane Sprite
 	m_pPlaneSprite = new Plane();
 	addChild(m_pPlaneSprite);
@@ -143,6 +144,12 @@ void PlayScene::start()
 	m_pPlayer = new Player();
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
+	
+	/*
+	//ufo sprite
+	m_pShipSprite = new Ship();
+	addChild(m_pShipSprite);
+	*/
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);

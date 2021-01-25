@@ -263,4 +263,9 @@
       <Filter>DOCS</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\textures\ufo.png">
+      <Filter>Game Objects</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
