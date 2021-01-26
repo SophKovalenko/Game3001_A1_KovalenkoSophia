@@ -39,6 +39,8 @@ private:
 	Target* m_pTarget;
 	Background* m_pBackground;
 
+
+
 	// UI Items
 	Button* m_pBackButton;
 	Button* m_pNextButton;
