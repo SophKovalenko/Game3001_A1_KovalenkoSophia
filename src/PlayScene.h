@@ -22,7 +22,7 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 private:
-	//const Uint8* m_keystates;
+	const Uint8* m_keystates;
 
 	// IMGUI Function
 	void GUI_Function() const;

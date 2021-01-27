@@ -5,8 +5,8 @@ Background::Background()
 	TextureManager::Instance()->load("../Assets/textures/background.png", "background");
 
 	auto size = TextureManager::Instance()->getTextureSize("background");
-	setWidth(1024);
-	setHeight(768);
+	setWidth(800);
+	setHeight(600);
 	setEnabled(true);
 	setType(BACKGROUND);
 }
@@ -19,7 +19,7 @@ void Background::draw()
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
-	TextureManager::Instance()->draw("background", 300, 300, 0, 255, true, SDL_FLIP_NONE);
+	TextureManager::Instance()->draw("background", 300, 300, 0, 0, true, SDL_FLIP_NONE);
 		//getTransform()->position.x, getTransform()->position.y, 255, true);
 }
 

@@ -4,9 +4,9 @@
 enum GameObjectType {
 	NONE = -1,
 	UFO,
-	BACKGROUND,
 	SHIP,
 	TARGET,
+	BACKGROUND,
 	PLAYER,
 	PLANE,
 	START_BUTTON,

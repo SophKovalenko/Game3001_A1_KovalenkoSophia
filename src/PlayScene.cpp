@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include "Util.h"
 
 // required for IMGUI
 #include "imgui.h"
@@ -59,22 +60,31 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	m_pBackground = new Background();
+	m_pBackground->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	//addChild(m_pBackground, 1);
+
+	//Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048);
+	//Mix_AllocateChannels(8)
+
+	//m_pMainTrack = Mix_LoadMUS()
+
+	//Mix_PlayMusic(m_pMainTrack,-1)
+	//Mix_VolumeMusic(8)
+
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 
-	m_pBackground = new Background();
-	m_pBackground->getTransform()->position = glm::vec2(400.0f, 300.0f);
-	addChild(m_pBackground);
-
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = glm::vec2(400.0f, 300.0f);
-	addChild(m_pTarget);
+	addChild(m_pTarget, 2);
 
 	m_pUfo = new Ufo();
 	m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
 	m_pUfo->setEnabled(false);
 	m_pUfo->setDestination(m_pTarget->getTransform()->position);
-	addChild(m_pUfo);
+	addChild(m_pUfo, 2);
+
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
@@ -121,7 +131,7 @@ void PlayScene::start()
 	m_pInstructionsLabel = new Label("Press 1-> Seeking/ 2-> Fleeing/ 3-> Arrival/ 4-> Obstacle Avoidance", "Consolas");
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 
-	addChild(m_pInstructionsLabel);
+	addChild(m_pInstructionsLabel, 2);
 }
 
 void PlayScene::GUI_Function() const
@@ -132,7 +142,20 @@ void PlayScene::GUI_Function() const
 	// See examples by uncommenting the following - also look at imgui_demo.cpp in the IMGUI filter
 	//ImGui::ShowDemoWindow();
 	
+
 	ImGui::Begin("Your Window Title Goes Here", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
+
+	static float speed = 10.0f;
+	if (ImGui::SliderFloat("MaxSpeed", &speed, 0.0f, 100.0f))
+	{
+		m_pUfo->setMaxSpeed(speed);
+	}
+
+	static float angleInRadians = 0.0f;
+	if (ImGui::SliderAngle("Orientation Angle", &angleInRadians))
+	{
+		m_pUfo->setRotation(angleInRadians * Util::Rad2Deg);
+	}
 
 	if(ImGui::Button("Start"))
 	{
@@ -149,12 +172,12 @@ void PlayScene::GUI_Function() const
 
 	ImGui::Separator();
 
-	static float float2[2] = {m_pTarget->getTransform()->position.x, m_pTarget->getTransform()->position.y};
-	if(ImGui::SliderFloat3("Target", float2, 0.0f, 800.0f))
+	static float targetPosition[2] = { m_pTarget->getTransform()->position.x, m_pTarget->getTransform()->position.y };
+	if (ImGui::SliderFloat2("Target", targetPosition, 0.0f, 800.0f))
 	{
-		m_pTarget->getTransform()->position = glm::vec2(float2[0], float2[1]);
+		m_pTarget->getTransform()->position = glm::vec2(targetPosition[0], targetPosition[1]);
+		m_pUfo->setDestination(m_pTarget->getTransform()->position);
 	}
-	
 	ImGui::End();
 
 	// Don't Remove this
