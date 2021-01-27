@@ -24,13 +24,14 @@ void PlayScene::draw()
 	}
 
 	drawDisplayList();
-	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 0, 255, 255, 255);
-	//SDL_RenderCopy(Renderer::Instance()->getRenderer());
+	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 0, 255, 255, 255); // temp turquoise background
 }
 
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	CollisionManager::AABBCheck(m_pUfo, m_pObstacle); //checks to see if collision
 }
 
 void PlayScene::clean()
@@ -60,31 +61,27 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
-	m_pBackground = new Background();
-	m_pBackground->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	//m_pBackground = new Background();
+	//m_pBackground->getTransform()->position = glm::vec2(400.0f, 300.0f);
 	//addChild(m_pBackground, 1);
-
-	//Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 2048);
-	//Mix_AllocateChannels(8)
-
-	//m_pMainTrack = Mix_LoadMUS()
-
-	//Mix_PlayMusic(m_pMainTrack,-1)
-	//Mix_VolumeMusic(8)
 
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = glm::vec2(400.0f, 300.0f);
-	addChild(m_pTarget, 2);
+	addChild(m_pTarget);
 
+	m_pObstacle = new Obstacle();
+	m_pObstacle->getTransform()->position = glm::vec2(500.0f, 300.0f);
+	addChild(m_pObstacle);
+
+	// instantiating spaceship
 	m_pUfo = new Ufo();
-	m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
+	m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
 	m_pUfo->setEnabled(false);
 	m_pUfo->setDestination(m_pTarget->getTransform()->position);
-	addChild(m_pUfo, 2);
-
+	addChild(m_pUfo);
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
@@ -143,18 +140,31 @@ void PlayScene::GUI_Function() const
 	//ImGui::ShowDemoWindow();
 	
 
-	ImGui::Begin("Your Window Title Goes Here", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
+	ImGui::Begin("GAME 3001 - A1", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
 	static float speed = 10.0f;
 	if (ImGui::SliderFloat("MaxSpeed", &speed, 0.0f, 100.0f))
 	{
 		m_pUfo->setMaxSpeed(speed);
+
+	}
+
+	static float acceleration_rate = 2.0f;
+	if (ImGui::SliderFloat("Acceleration Rate", &acceleration_rate, 0.0f, 50.0f))
+	{
+		m_pUfo->setAccelerationRate(acceleration_rate);
 	}
 
 	static float angleInRadians = 0.0f;
 	if (ImGui::SliderAngle("Orientation Angle", &angleInRadians))
 	{
 		m_pUfo->setRotation(angleInRadians * Util::Rad2Deg);
+	}
+
+	static float turn_rate = 5.0f;
+	if (ImGui::SliderFloat("Turn Rate", &turn_rate, 0.0f, 20.0f))
+	{
+		m_pUfo->setTurnRate(turn_rate);
 	}
 
 	if(ImGui::Button("Start"))
@@ -168,6 +178,12 @@ void PlayScene::GUI_Function() const
 	{
 		m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
 		m_pUfo->setEnabled(false);
+		m_pUfo->getRigidBody()->velocity = glm::vec2(0.0f); //reset velocity
+		m_pUfo->setRotation(0.0f); //reset angle
+		turn_rate = 5.0f;
+		acceleration_rate = 2.0f;
+		speed = 10.0f;
+		angleInRadians = m_pUfo->getRotation();
 	}
 
 	ImGui::Separator();

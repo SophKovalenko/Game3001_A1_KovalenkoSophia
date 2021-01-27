@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include "Ufo.h"
 #include "Target.h"
-#include "Background.h"
+#include "Obstacle.h"
 #include "Button.h"
 #include "Label.h"
 
@@ -37,7 +37,7 @@ private:
 
 	Ufo* m_pUfo;
 	Target* m_pTarget;
-	Background* m_pBackground;
+	Obstacle* m_pObstacle;
 
 
 
