@@ -30,11 +30,6 @@ private:
 	
 	glm::vec2 m_mousePosition;
 
-	//sound effect objects
-	//Mix_Chunk* m_collide;
-	//Music track object
-	//Mix_Music* m_maintrack;
-
 	Ufo* m_pUfo;
 	Target* m_pTarget;
 	Obstacle* m_pObstacle;
