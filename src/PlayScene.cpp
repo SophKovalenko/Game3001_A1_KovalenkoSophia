@@ -60,6 +60,7 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
 	{
 		//flee
+		m_pUfo->setDestination(m_pTarget->getTransform()->position - m_pUfo->getTransform()->position);
 		
 	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3))
