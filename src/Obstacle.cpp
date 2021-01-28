@@ -25,6 +25,7 @@ Obstacle::~Obstacle()
 
 void Obstacle::draw()
 {
+
 	TextureManager::Instance()->draw("obstacle", getTransform()->position.x, getTransform()->position.y,
 		0, 255, true);
 }

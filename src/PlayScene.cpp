@@ -60,6 +60,8 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
 	{
 		//flee
+		m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
+		m_pTarget->getTransform()->position = glm::vec2(200.0f, 150.0f);
 		m_pUfo->setDestination(m_pTarget->getTransform()->position - m_pUfo->getTransform()->position);
 		
 	}
@@ -70,7 +72,7 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_4))
 	{
 		//avoid obstacle
-		
+		addChild(m_pObstacle);
 	}
 }
 
@@ -89,7 +91,7 @@ void PlayScene::start()
 
 	m_pObstacle = new Obstacle();
 	m_pObstacle->getTransform()->position = glm::vec2(500.0f, 300.0f);
-	addChild(m_pObstacle);
+	//addChild(m_pObstacle);
 
 	// instantiating spaceship
 	m_pUfo = new Ufo();
