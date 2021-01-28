@@ -205,6 +205,7 @@
     <ClInclude Include="..\src\Obstacle.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\Sprite.h" />
+    <ClInclude Include="..\src\SteeringState.h" />
     <ClInclude Include="..\src\Ufo.h" />
     <ClInclude Include="..\src\UIControl.h" />
     <ClInclude Include="..\src\DisplayObject.h" />

@@ -8,7 +8,7 @@
 
 // enums
 #include "GameObjectType.h"
-
+#include "SteeringState.h"
 
 class GameObject {
 public:

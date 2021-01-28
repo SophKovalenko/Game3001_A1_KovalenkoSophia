@@ -138,4 +138,13 @@ void Ufo::m_Move()
 	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
 
 	getTransform()->position += getRigidBody()->velocity;
+
+	/*new stuff
+
+	float angleToTarget = Util::signedAngle();
+
+		if (angleToTarget > 0.0f)
+		{
+		
+		}*/
 }
