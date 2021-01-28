@@ -54,21 +54,13 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
 		//seek
-		/*m_pTarget = new Target();
-		m_pTarget->getTransform()->position = glm::vec2(400.0f, 300.0f);
-		addChild(m_pTarget);
-
-		m_pUfo = new Ufo();
-		m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
-		m_pUfo->setEnabled(false);
 		m_pUfo->setDestination(m_pTarget->getTransform()->position);
-		addChild(m_pUfo); */
 	}
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
 	{
 		//flee
-		//TheGame::Instance()->changeSceneState(END_SCENE);
+		
 	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3))
 	{
@@ -102,7 +94,7 @@ void PlayScene::start()
 	m_pUfo = new Ufo();
 	m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
 	m_pUfo->setEnabled(false);
-	m_pUfo->setDestination(m_pTarget->getTransform()->position);
+	//m_pUfo->setDestination(m_pTarget->getTransform()->position);
 	addChild(m_pUfo); 
 
 	// Back Button
