@@ -68,7 +68,7 @@ private:
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
-	Line m_leftWhisker, m_rightWhisker;
+	Line m_leftWhisker, m_rightWhisker, m_centerWhisker;
 
 	void m_Move();
 

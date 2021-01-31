@@ -40,15 +40,19 @@ void Ufo::draw()
 
 	Util::DrawLine(m_leftWhisker.Start(), m_leftWhisker.End());
 	Util::DrawLine(m_rightWhisker.Start(), m_rightWhisker.End());
+	Util::DrawLine(m_centerWhisker.Start(), m_centerWhisker.End());
 }
 
 void Ufo::update()
 {
 	m_leftWhisker.SetLine(getTransform()->position,
-		(getTransform()->position + Util::getOrientation(m_rotationAngle + 45) * 100.0f));
+		(getTransform()->position + Util::getOrientation(m_rotationAngle - 40) * 100.0f));
 
 	m_rightWhisker.SetLine(getTransform()->position,
-		(getTransform()->position + Util::getOrientation(m_rotationAngle -45) * 100.0f));
+		(getTransform()->position + Util::getOrientation(m_rotationAngle + 40) * 100.0f));
+
+	m_centerWhisker.SetLine(getTransform()->position,
+		(getTransform()->position + Util::getOrientation(m_rotationAngle) * 100.0f));
 
 	m_Move();
 }

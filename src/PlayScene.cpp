@@ -52,6 +52,12 @@ void PlayScene::update()
 	{
 		SoundManager::Instance().playSound("yay", 0);
 	}
+
+	if (CollisionManager::lineRectCheck(m_pUfo->m_centerWhisker.Start(), m_pUfo->m_centerWhisker.End(),
+		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+	{
+		SoundManager::Instance().playSound("yay", 0);
+	}
 	//glm::vec2 steeringVelocity = m_pTarget->getPosition() - m_pUfo->getPosition();
 	//steeringVelocity = Util::normalize(steeringVelocity);
 	//m_pUfo->setVelocity(steeringVelocity);
@@ -124,6 +130,8 @@ void PlayScene::start()
 	m_pUfo->m_leftWhisker.SetLine(m_pUfo->getTransform()->position,
 		(m_pUfo->getTransform()->position + m_pUfo ->getOrientation() * 100.0f));
 	m_pUfo->m_rightWhisker.SetLine(m_pUfo->getTransform()->position,
+		(m_pUfo->getTransform()->position + m_pUfo->getOrientation() * 100.0f));
+	m_pUfo->m_centerWhisker.SetLine(m_pUfo->getTransform()->position,
 		(m_pUfo->getTransform()->position + m_pUfo->getOrientation() * 100.0f));
 	
 	addChild(m_pUfo); 

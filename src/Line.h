@@ -15,7 +15,7 @@ public:
 	}
 	glm::vec2 Start() const { return start; }
 	glm::vec2 End() const { return end; }
-	friend class PlayScene;
+	
 private:
 	glm::vec2 start;
 	glm::vec2 end;
