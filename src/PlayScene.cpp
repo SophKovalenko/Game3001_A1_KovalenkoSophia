@@ -41,11 +41,21 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
+	if (CollisionManager::lineRectCheck(m_pUfo->m_leftWhisker.Start(), m_pUfo->m_leftWhisker.End(),
+		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+	{
+		SoundManager::Instance().playSound("yay", 0);
+	}
+
+	if (CollisionManager::lineRectCheck(m_pUfo->m_rightWhisker.Start(), m_pUfo->m_rightWhisker.End(),
+		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+	{
+		SoundManager::Instance().playSound("yay", 0);
+	}
 	//glm::vec2 steeringVelocity = m_pTarget->getPosition() - m_pUfo->getPosition();
 	//steeringVelocity = Util::normalize(steeringVelocity);
 	//m_pUfo->setVelocity(steeringVelocity);
-
-	CollisionManager::AABBCheck(m_pUfo, m_pObstacle); //checks to see if collision
+//CollisionManager::AABBCheck(m_pUfo, m_pObstacle); //checks to see if collision
 }
 
 void PlayScene::clean()

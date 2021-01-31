@@ -40,14 +40,10 @@ void Ufo::draw()
 
 	Util::DrawLine(m_leftWhisker.Start(), m_leftWhisker.End());
 	Util::DrawLine(m_rightWhisker.Start(), m_rightWhisker.End());
-	//Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f)); // draws green line
 }
 
 void Ufo::update()
 {
-	//setLeftWhisker(getTransform()->position,
-		//(getTransform()->position + Util::getOrientation(m_rotationAngle + 45) + 100.0f));
-	
 	m_leftWhisker.SetLine(getTransform()->position,
 		(getTransform()->position + Util::getOrientation(m_rotationAngle + 45) * 100.0f));
 
