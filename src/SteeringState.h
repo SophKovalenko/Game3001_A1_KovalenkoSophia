@@ -2,6 +2,7 @@
 #ifndef __STEERING_STATE__
 #define __STEERING_STATE__
 enum SteeringState {
+	IDLE,
 	SEEK,
 	FLEE,
 	ARRIVE,

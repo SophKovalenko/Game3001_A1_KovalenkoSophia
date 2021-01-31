@@ -19,6 +19,13 @@ PlayScene::PlayScene()
 PlayScene::~PlayScene()
 = default;
 
+//THIS IS NEW
+void PlayScene::createGameObjects()
+{
+
+}
+
+
 void PlayScene::draw()
 {
 	if(EventManager::Instance().isIMGUIActive())
@@ -27,12 +34,16 @@ void PlayScene::draw()
 	}
 
 	drawDisplayList();
-	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 0, 255, 255, 255); // temp turquoise background
+	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 0, 100, 255, 255); // background colour
 }
 
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	//glm::vec2 steeringVelocity = m_pTarget->getPosition() - m_pUfo->getPosition();
+	//steeringVelocity = Util::normalize(steeringVelocity);
+	//m_pUfo->setVelocity(steeringVelocity);
 
 	CollisionManager::AABBCheck(m_pUfo, m_pObstacle); //checks to see if collision
 }
@@ -85,6 +96,7 @@ void PlayScene::start()
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 
+	
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = glm::vec2(400.0f, 300.0f);
 	addChild(m_pTarget);
@@ -97,8 +109,15 @@ void PlayScene::start()
 	m_pUfo = new Ufo();
 	m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
 	m_pUfo->setEnabled(false);
-	//m_pUfo->setDestination(m_pTarget->getTransform()->position);
+	m_pUfo->setDestination(m_pTarget->getTransform()->position);
+
+	m_pUfo->m_leftWhisker.SetLine(m_pUfo->getTransform()->position,
+		(m_pUfo->getTransform()->position + m_pUfo ->getOrientation() * 100.0f));
+	m_pUfo->m_rightWhisker.SetLine(m_pUfo->getTransform()->position,
+		(m_pUfo->getTransform()->position + m_pUfo->getOrientation() * 100.0f));
+	
 	addChild(m_pUfo); 
+	
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);

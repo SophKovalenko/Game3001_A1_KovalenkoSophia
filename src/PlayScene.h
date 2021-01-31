@@ -21,6 +21,9 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
+
+	//THIS IS NEW
+	void PlayScene::createGameObjects();
 private:
 	const Uint8* m_keystates;
 

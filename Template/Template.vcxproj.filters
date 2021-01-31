@@ -272,6 +272,9 @@
     <ClInclude Include="..\src\SteeringState.h">
       <Filter>Enums</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Line.h">
+      <Filter>Game Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

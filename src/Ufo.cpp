@@ -10,11 +10,19 @@ Ufo::Ufo()
 	setWidth(size.x);
 	setHeight(size.y);
 
+	/*THIS IS NEW
+    setPosition(glm::vec2(400.0f, 300.0f);
+	setVelocity(glm::vec2(0.0f, 0.0f));
+	setSteerState(IDLE);
+	*/
+
+
 	getTransform()->position = glm::vec2(400.0f, 300.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	setType(UFO);
+
 	setMaxSpeed(10.0f);
 	setOrientation(glm::vec2(0.0f, -1.0f));
 	setRotation(0.0f);
@@ -30,11 +38,22 @@ void Ufo::draw()
 	TextureManager::Instance()->draw("ufo",
 		getTransform()->position.x, getTransform()->position.y, m_rotationAngle, 255, true);
 
-	Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f)); // draws green line
+	Util::DrawLine(m_leftWhisker.Start(), m_leftWhisker.End());
+	Util::DrawLine(m_rightWhisker.Start(), m_rightWhisker.End());
+	//Util::DrawLine(getTransform()->position, (getTransform()->position + getOrientation() * 60.0f)); // draws green line
 }
 
 void Ufo::update()
 {
+	//setLeftWhisker(getTransform()->position,
+		//(getTransform()->position + Util::getOrientation(m_rotationAngle + 45) + 100.0f));
+	
+	m_leftWhisker.SetLine(getTransform()->position,
+		(getTransform()->position + Util::getOrientation(m_rotationAngle + 45) * 100.0f));
+
+	m_rightWhisker.SetLine(getTransform()->position,
+		(getTransform()->position + Util::getOrientation(m_rotationAngle -45) * 100.0f));
+
 	m_Move();
 }
 
@@ -80,6 +99,16 @@ float Ufo::getAccelerationRate() const
 void Ufo::setAccelerationRate(const float rate)
 {
 	m_accelerationRate = rate;
+}
+
+void Ufo::setLeftWhisker(glm::vec2 start, glm::vec2 end)
+{
+	m_leftWhisker.SetLine(start, end);
+}
+
+void Ufo::setRightWhisker(glm::vec2 start, glm::vec2 end)
+{
+	m_rightWhisker.SetLine(start, end);
 }
 
 float Ufo::getRotation() const
@@ -137,7 +166,7 @@ void Ufo::m_Move()
 
 	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
 
-	getTransform()->position += getRigidBody()->velocity;
+	getTransform()->position += getRigidBody()->velocity; 
 
 	/*new stuff
 
