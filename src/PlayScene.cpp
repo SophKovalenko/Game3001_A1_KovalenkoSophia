@@ -45,6 +45,8 @@ void PlayScene::update()
 		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
 	{
 		SoundManager::Instance().playSound("yay", 0);
+
+		//turn random direction, rotate by small increment each time its colliding but go same way
 	}
 
 	if (CollisionManager::lineRectCheck(m_pUfo->m_rightWhisker.Start(), m_pUfo->m_rightWhisker.End(),
