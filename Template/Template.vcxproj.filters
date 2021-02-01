@@ -281,4 +281,9 @@
       <Filter>DOCS</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Assets\textures\startButton.png">
+      <Filter>Game Objects</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

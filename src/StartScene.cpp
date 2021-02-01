@@ -37,7 +37,7 @@ void StartScene::handleEvents()
 		TheGame::Instance()->quit();
 	}
 
-	if(EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
+	if(EventManager::Instance().isKeyDown(SDL_SCANCODE_SPACE))
 	{
 		TheGame::Instance()->changeSceneState(PLAY_SCENE);
 	}
@@ -45,24 +45,19 @@ void StartScene::handleEvents()
 
 void StartScene::start()
 {
-	const SDL_Color mag = { 200, 0, 100, 0 };
+	const SDL_Color lime = { 0, 255, 0, 255 };
 	
-	m_pInstructionsLabel = new Label("Press 1 or START to Begin", "Consolas", 40, mag, glm::vec2(400.0f, 120.0f));
+	m_pInstructionsLabel = new Label("Game 3001 W2021 Assignment 1", "Consolas", 40, lime, glm::vec2(400.0f, 100.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 
-	const SDL_Color lime = { 0, 255, 0, 255 };
-	m_pStudentLabel = new Label("Sophia Kovalenko - 101333565", "Consolas", 40, lime, glm::vec2(400.0f, 550.0f));
+	m_pStudentLabel = new Label("Sophia Kovalenko - 101333565", "Consolas", 40, lime, glm::vec2(400.0f, 500.0f));
 	m_pStudentLabel->setParent(this);
 	addChild(m_pStudentLabel);
 
-	/*m_pShip = new Ship();
-	m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
-	addChild(m_pShip); */
-
 	// Start Button
 	m_pStartButton = new Button();
-	m_pStartButton->getTransform()->position = glm::vec2(400.0f, 400.0f); 
+	m_pStartButton->getTransform()->position = glm::vec2(370.0f, 270.0f); 
 
 	m_pStartButton->addEventListener(CLICK, [&]()-> void
 	{
