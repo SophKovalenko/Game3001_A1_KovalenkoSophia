@@ -35,12 +35,7 @@ public:
 	void setRightWhisker(glm::vec2 start, glm::vec2 end);
 	friend class PlayScene;
 
-	/*THIS IS NEW
-	void setPosition();
-	void setVelocity(glm::vec2(0.0f, 0.0f));
-	void setSteerState(IDLE);
-
-	void turnRight()
+	void turnUfo()
 	{
 		m_currentDirection += m_turnRate;
 		if (m_currentDirection >= 360)
@@ -48,16 +43,6 @@ public:
 			m_currentDirection = 0;
 		}
 	}
-
-	void turnLeft();
-	{
-		m_currentDirection -= m_turnRate;
-		if (m_currentDirection >= 360)
-		{
-			m_currentDirection = 359.0;
-		}
-	}
-	*/
 
 private:
 
@@ -68,6 +53,7 @@ private:
 	float m_maxSpeed;
 	float m_turnRate;
 	float m_accelerationRate;
+	float m_currentDirection;
 	Line m_leftWhisker, m_rightWhisker, m_centerWhisker;
 
 	void m_Move();

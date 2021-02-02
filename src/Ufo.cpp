@@ -1,6 +1,7 @@
 #include "Ufo.h"
 #include "Game.h"
 #include "Util.h"
+#include "PlayScene.h"
 
 Ufo::Ufo()
 {
@@ -9,13 +10,6 @@ Ufo::Ufo()
 	auto size = TextureManager::Instance()->getTextureSize("ufo");
 	setWidth(size.x);
 	setHeight(size.y);
-
-	/*THIS IS NEW
-    setPosition(glm::vec2(400.0f, 300.0f);
-	setVelocity(glm::vec2(0.0f, 0.0f));
-	setSteerState(IDLE);
-	*/
-
 
 	getTransform()->position = glm::vec2(400.0f, 300.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
@@ -156,7 +150,7 @@ void Ufo::m_Move()
 		}
 	}
 
-	//std::cout << "Target Rotation: " << target_rotation << std::endl;
+	//std::cout << "Target Rotation: " << target_rotation << std::endl;*/
 
 	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
 
@@ -168,12 +162,4 @@ void Ufo::m_Move()
 
 	getTransform()->position += getRigidBody()->velocity; 
 
-	/*new stuff
-
-	float angleToTarget = Util::signedAngle();
-
-		if (angleToTarget > 0.0f)
-		{
-		
-		}*/
 }

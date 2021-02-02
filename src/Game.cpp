@@ -59,7 +59,7 @@ bool Game::init(const char* title, const int x, const int y, const int width, co
 			if (Renderer::Instance()->getRenderer() != nullptr) // render init success
 			{
 				std::cout << "renderer creation success" << std::endl;
-				SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
+				SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 0, 100, 255, 255);
 				//SDL_RenderCopy(Renderer::Instance()->getRenderer());
 			}
 			else

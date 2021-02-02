@@ -19,13 +19,6 @@ PlayScene::PlayScene()
 PlayScene::~PlayScene()
 = default;
 
-//THIS IS NEW
-void PlayScene::createGameObjects()
-{
-
-}
-
-
 void PlayScene::draw()
 {
 	if(EventManager::Instance().isIMGUIActive())
@@ -34,7 +27,7 @@ void PlayScene::draw()
 	}
 
 	drawDisplayList();
-	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 0, 100, 255, 255); // background colour
+	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 0, 255, 255, 255); // background colour
 }
 
 void PlayScene::update()
@@ -45,20 +38,21 @@ void PlayScene::update()
 		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
 	{
 		SoundManager::Instance().playSound("yay", 0);
-
-		//turn random direction, rotate by small increment each time its colliding but go same way
+		m_pUfo->turnUfo(); //turn random direction, rotate by small increment each time its colliding but go same way
 	}
 
 	if (CollisionManager::lineRectCheck(m_pUfo->m_rightWhisker.Start(), m_pUfo->m_rightWhisker.End(),
 		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
 	{
 		SoundManager::Instance().playSound("yay", 0);
+		m_pUfo->turnUfo();
 	}
 
 	if (CollisionManager::lineRectCheck(m_pUfo->m_centerWhisker.Start(), m_pUfo->m_centerWhisker.End(),
 		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
 	{
 		SoundManager::Instance().playSound("yay", 0);
+		m_pUfo->turnUfo();
 	}
 	//glm::vec2 steeringVelocity = m_pTarget->getPosition() - m_pUfo->getPosition();
 	//steeringVelocity = Util::normalize(steeringVelocity);
@@ -83,25 +77,46 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
 		//seek
+		Reset();
+		m_pUfo->setEnabled(true);
+		addChild(m_pTarget);
 		m_pUfo->setDestination(m_pTarget->getTransform()->position);
 	}
 
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
 	{
 		//flee
-		m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
+		Reset();
+		m_pUfo->setEnabled(true);
+		addChild(m_pTarget);
+		m_pUfo->getTransform()->position = glm::vec2(100.0f, 200.0f);
 		m_pTarget->getTransform()->position = glm::vec2(200.0f, 150.0f);
-		m_pUfo->setDestination(m_pTarget->getTransform()->position - m_pUfo->getTransform()->position);
+		m_pUfo->setDestination(-m_pTarget->getTransform()->position);
 		
 	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3))
 	{
 		//arrive
+		Reset();
+		m_pUfo->setEnabled(true);
+		addChild(m_pTarget);
+
+		m_pUfo->setDestination(m_pTarget->getTransform()->position);
+
+		if (m_pUfo->getTransform()->position == m_pTarget->getTransform()->position)
+		{
+			m_pUfo->setAccelerationRate(0.0f);
+			m_pUfo->setMaxSpeed(0.0f);
+			m_pUfo->setTurnRate(0.0f);
+		}
 	}
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_4))
 	{
 		//avoid obstacle
+		Reset();
+		m_pUfo->setEnabled(true);
 		addChild(m_pObstacle);
+		m_pUfo->setDestination(m_pObstacle->getTransform()->position);
 	}
 }
 
@@ -117,7 +132,7 @@ void PlayScene::start()
 	
 	m_pTarget = new Target();
 	m_pTarget->getTransform()->position = glm::vec2(400.0f, 300.0f);
-	addChild(m_pTarget);
+	//addChild(m_pTarget);
 
 	m_pObstacle = new Obstacle();
 	m_pObstacle->getTransform()->position = glm::vec2(500.0f, 300.0f);
@@ -127,7 +142,7 @@ void PlayScene::start()
 	m_pUfo = new Ufo();
 	m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
 	m_pUfo->setEnabled(false);
-	m_pUfo->setDestination(m_pTarget->getTransform()->position);
+	//m_pUfo->setDestination(m_pTarget->getTransform()->position);
 
 	m_pUfo->m_leftWhisker.SetLine(m_pUfo->getTransform()->position,
 		(m_pUfo->getTransform()->position + m_pUfo ->getOrientation() * 100.0f));
@@ -185,6 +200,18 @@ void PlayScene::start()
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
 
 	addChild(m_pInstructionsLabel, 2);
+}
+
+void PlayScene::Reset()
+{
+	m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
+	m_pUfo->setEnabled(false);
+	m_pUfo->getRigidBody()->velocity = glm::vec2(0.0f); //reset velocity
+	m_pUfo->setRotation(0.0f); //reset angle
+	m_pUfo->setTurnRate(5.0f);
+	m_pUfo->setAccelerationRate(2.0f);
+	m_pUfo->setMaxSpeed(10.0f);
+	//m_pUfo->angleInRadians = m_pUfo->getRotation();
 }
 
 void PlayScene::GUI_Function() const
