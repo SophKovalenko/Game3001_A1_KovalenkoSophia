@@ -103,7 +103,7 @@ void SoundManager::playSound(const std::string& id, const int loop/* = 0 */, con
 
 void SoundManager::setMusicVolume(const int vol) const
 {
-	if (vol >= 0 && vol <= 128)
+	if (vol >= 0 && vol <= 120)
 	{
 		Mix_VolumeMusic(vol);
 	}
@@ -111,7 +111,7 @@ void SoundManager::setMusicVolume(const int vol) const
 
 void SoundManager::setSoundVolume(const int vol) const
 {
-	if (vol >= 0 && vol <= 128)
+	if (vol >= 0 && vol <= 120)
 	{
 		Mix_Volume(-1, vol);
 	}	

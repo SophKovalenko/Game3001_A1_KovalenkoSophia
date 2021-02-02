@@ -80,6 +80,7 @@ void PlayScene::handleEvents()
 		Reset();
 		m_pUfo->setEnabled(true);
 		addChild(m_pTarget);
+		SoundManager::Instance().playSound("ufo", 0);
 		m_pUfo->setDestination(m_pTarget->getTransform()->position);
 	}
 
@@ -89,6 +90,7 @@ void PlayScene::handleEvents()
 		Reset();
 		m_pUfo->setEnabled(true);
 		addChild(m_pTarget);
+		SoundManager::Instance().playSound("ufo", 0);
 		m_pUfo->getTransform()->position = glm::vec2(100.0f, 200.0f);
 		m_pTarget->getTransform()->position = glm::vec2(200.0f, 150.0f);
 		m_pUfo->setDestination(-m_pTarget->getTransform()->position);

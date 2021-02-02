@@ -1,5 +1,6 @@
 #include "Target.h"
 #include "TextureManager.h"
+#include "SoundManager.h"
 
 
 Target::Target()
@@ -14,6 +15,8 @@ Target::Target()
 	getRigidBody()->isColliding = false;
 
 	setType(TARGET);
+
+	SoundManager::Instance().load("../Assets/audio/space.mp3", "ufo", SOUND_SFX);
 }
 
 Target::~Target()
