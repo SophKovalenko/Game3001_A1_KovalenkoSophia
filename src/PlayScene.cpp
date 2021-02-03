@@ -48,11 +48,16 @@ void PlayScene::update()
 	{
 		m_pUfo->Arrive();
 
-		if (Util::distance(m_pUfo->getTransform()->position, m_pTarget->getTransform()->position) < 5.0f, 5.0f)
+		if (Util::distance(m_pUfo->getTransform()->position, m_pTarget->getTransform()->position) < 100)
 		{
-			m_pUfo->getRigidBody()->velocity = glm::vec2(-2.0f, -2.0f);
-			m_pUfo->getRigidBody()->acceleration = glm::vec2(-2.0f, -2.0f);
-			getRigidBody()->isMoving = false;
+			m_pUfo->setAccelerationRate(0.5f);
+			m_pUfo->setMaxSpeed(1.0f);
+
+			if (Util::distance(m_pUfo->getTransform()->position, m_pTarget->getTransform()->position) < 10)
+			{
+				m_pUfo->setMaxSpeed(0.0f);
+
+			}
 		}
 	}
 
@@ -142,6 +147,8 @@ void PlayScene::handleEvents()
 		addChild(m_pTarget);
 		SoundManager::Instance().playSound("ufo", 0);
 		m_pUfo->setDestination(m_pTarget->getTransform()->position);
+
+		m_pTarget->getTransform()->position = glm::vec2(650.0f, 380.0f);
 		
 	}
 }
