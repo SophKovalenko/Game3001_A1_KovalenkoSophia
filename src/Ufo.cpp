@@ -12,14 +12,14 @@ Ufo::Ufo()
 	setWidth(size.x);
 	setHeight(size.y);
 
-	getTransform()->position = glm::vec2(400.0f, 300.0f);
+	getTransform()->position = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
 	getRigidBody()->isMoving = true;
 	setType(UFO);
 
-	setMaxSpeed(8.0f);
+	setMaxSpeed(6.0f);
 	setOrientation(glm::vec2(0.0f, -1.0f));
 	setRotation(0.0f);
 	setAccelerationRate(5.0f);
@@ -107,13 +107,13 @@ void Ufo::setRightWhisker(glm::vec2 start, glm::vec2 end)
 
 void Ufo::Reset()
 {
-	getTransform()->position = glm::vec2(200.0f, 200.0f);
+	getTransform()->position = glm::vec2(0.0f, 0.0f);
 	setEnabled(false);
 	getRigidBody()->velocity = glm::vec2(0.0f); //reset velocity
 	setRotation(0.0f); //reset angle
 	setTurnRate(5.0f);
 	setAccelerationRate(2.0f);
-	setMaxSpeed(8.0f);
+	setMaxSpeed(6.0f);
 	enableSeek = false;
 	enableFlee = false;
 	enableArrive = false;
@@ -234,7 +234,38 @@ void Ufo::Arrive()
 
 void Ufo::Avoid()
 {
+	auto deltaTime = TheGame::Instance()->getDeltaTime();
 
+	// direction with magnitude
+	m_targetDirection = m_destination - getTransform()->position;
+
+	// normalized direction
+	m_targetDirection = Util::normalize(m_targetDirection);
+
+	auto target_rotation = Util::signedAngle(getOrientation(), m_targetDirection);
+
+	auto turn_sensitivity = 5.0f;
+
+	if (abs(target_rotation) > turn_sensitivity)
+	{
+		if (target_rotation > 0.0f)
+		{
+			setRotation(getRotation() + getTurnRate());
+		}
+		if (target_rotation < 0.0f)
+		{
+			setRotation(getRotation() - getTurnRate());
+		}
+	}
+	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+
+	//using the formula pf = pi + vi + 0.5ai*t^2 
+	getRigidBody()->velocity += getOrientation() * (deltaTime)+
+		0.5f * getRigidBody()->acceleration * (deltaTime); // scale our velocity
+
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+
+	getTransform()->position += getRigidBody()->velocity;
 }
 
 float Ufo::getRotation() const

@@ -53,7 +53,7 @@ void PlayScene::update()
 			m_pUfo->setAccelerationRate(0.5f);
 			m_pUfo->setMaxSpeed(1.0f);
 
-			if (Util::distance(m_pUfo->getTransform()->position, m_pTarget->getTransform()->position) < 10)
+			if (Util::distance(m_pUfo->getTransform()->position, m_pTarget->getTransform()->position) < 20)
 			{
 				m_pUfo->setMaxSpeed(0.0f);
 
@@ -64,26 +64,30 @@ void PlayScene::update()
 	if (m_pUfo->enableAvoid == true)
 	{
 		m_pUfo->Avoid();
-
-		if (CollisionManager::lineRectCheck(m_pUfo->m_leftWhisker.Start(), m_pUfo->m_leftWhisker.End(),
+		
+		
+		if (CollisionManager::lineRectCheck(m_pUfo->m_centerWhisker.Start(), m_pUfo->m_centerWhisker.End(),
 			(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
 		{
-			//SoundManager::Instance().playSound("yay", 0);
-			m_pUfo->turnUfo(); //turn random direction, rotate by small increment each time its colliding but go same way
+			SoundManager::Instance().playSound("yay", 0);
+			m_pUfo->setMaxSpeed(1.0f);
+			m_pUfo->turnUfo();
 		}
 
 		if (CollisionManager::lineRectCheck(m_pUfo->m_rightWhisker.Start(), m_pUfo->m_rightWhisker.End(),
 			(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
 		{
-			//SoundManager::Instance().playSound("yay", 0);
+			SoundManager::Instance().playSound("yay", 0);
+			m_pUfo->setMaxSpeed(1.0f);
 			m_pUfo->turnUfo();
 		}
 
-		if (CollisionManager::lineRectCheck(m_pUfo->m_centerWhisker.Start(), m_pUfo->m_centerWhisker.End(),
+		if (CollisionManager::lineRectCheck(m_pUfo->m_leftWhisker.Start(), m_pUfo->m_leftWhisker.End(),
 			(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
 		{
-			//SoundManager::Instance().playSound("yay", 0);
-			m_pUfo->turnUfo();
+			SoundManager::Instance().playSound("yay", 0);
+			m_pUfo->setMaxSpeed(1.0f);
+			m_pUfo->turnUfo(); 
 		}
 	}
 
@@ -124,6 +128,7 @@ void PlayScene::handleEvents()
 		SoundManager::Instance().playSound("ufo", 0);
 		m_pUfo->setDestination(m_pUfo->getTransform()->position - m_pTarget->getTransform()->position);
 
+		m_pUfo->getTransform()->position = glm::vec2(250.0f, 350.0f);
 		m_pTarget->getTransform()->position = glm::vec2(300.0f, 400.0f);
 	}
 
@@ -174,8 +179,7 @@ void PlayScene::start()
 	// instantiating spaceship
 	m_pUfo = new Ufo();
 	m_pUfo->setEnabled(false);
-	//m_pUfo->setDestination(m_pTarget->getTransform()->position);
-	m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
+	//m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
 
 	m_pUfo->m_leftWhisker.SetLine(m_pUfo->getTransform()->position,
 		(m_pUfo->getTransform()->position + m_pUfo ->getOrientation() * 100.0f));

@@ -37,7 +37,7 @@ public:
 
 	void turnUfo() // turn right
 	{
-		m_currentDirection += m_turnRate;
+		m_currentDirection += 2.0f;
 		if (m_currentDirection >= 360)
 		{
 			m_currentDirection = 0;
