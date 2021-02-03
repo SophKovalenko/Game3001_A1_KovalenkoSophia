@@ -35,7 +35,7 @@ public:
 	void setRightWhisker(glm::vec2 start, glm::vec2 end);
 	friend class PlayScene;
 
-	void turnUfo()
+	void turnUfo() // turn right
 	{
 		m_currentDirection += m_turnRate;
 		if (m_currentDirection >= 360)
@@ -43,6 +43,11 @@ public:
 			m_currentDirection = 0;
 		}
 	}
+
+	bool enableSeek = false;
+	bool enableFlee = false;
+	bool enableArrive = false;
+	bool enableAvoid = false;
 
 private:
 
@@ -56,7 +61,12 @@ private:
 	float m_currentDirection;
 	Line m_leftWhisker, m_rightWhisker, m_centerWhisker;
 
-	void m_Move();
+	void Reset();
+	void Seek();
+	void Flee();
+	void Arrive();
+	void Avoid();
+	//void m_Move();
 
 };
 

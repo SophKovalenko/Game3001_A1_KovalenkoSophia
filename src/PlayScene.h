@@ -22,9 +22,18 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 
-	void Reset();
+	/*void Reset();
+	void Seek();
+	void Flee();
+	void Arrive();
+	void Avoid();*/
 private:
 	const Uint8* m_keystates;
+
+	//bool enableSeek = false;
+	//bool enableFlee = false;
+	//bool enableArrive = false;
+	//bool enableAvoid = false;
 
 	// IMGUI Function
 	void GUI_Function() const;
@@ -36,12 +45,11 @@ private:
 	Target* m_pTarget;
 	Obstacle* m_pObstacle;
 
-
-
 	// UI Items
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
+
 };
 
 #endif /* defined (__PLAY_SCENE__) */

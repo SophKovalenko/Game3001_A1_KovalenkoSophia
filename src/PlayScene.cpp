@@ -34,30 +34,54 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	if (CollisionManager::lineRectCheck(m_pUfo->m_leftWhisker.Start(), m_pUfo->m_leftWhisker.End(),
-		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+	if (m_pUfo->enableSeek == true)
 	{
-		SoundManager::Instance().playSound("yay", 0);
-		m_pUfo->turnUfo(); //turn random direction, rotate by small increment each time its colliding but go same way
+		m_pUfo->Seek();
 	}
 
-	if (CollisionManager::lineRectCheck(m_pUfo->m_rightWhisker.Start(), m_pUfo->m_rightWhisker.End(),
-		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+	if (m_pUfo->enableFlee == true)
 	{
-		SoundManager::Instance().playSound("yay", 0);
-		m_pUfo->turnUfo();
+		m_pUfo->Flee();
 	}
 
-	if (CollisionManager::lineRectCheck(m_pUfo->m_centerWhisker.Start(), m_pUfo->m_centerWhisker.End(),
-		(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+	if (m_pUfo->enableArrive == true)
 	{
-		SoundManager::Instance().playSound("yay", 0);
-		m_pUfo->turnUfo();
+		m_pUfo->Arrive();
+
+		if (Util::distance(m_pUfo->getTransform()->position, m_pTarget->getTransform()->position) < 5.0f, 5.0f)
+		{
+			m_pUfo->getRigidBody()->velocity = glm::vec2(-2.0f, -2.0f);
+			m_pUfo->getRigidBody()->acceleration = glm::vec2(-2.0f, -2.0f);
+			getRigidBody()->isMoving = false;
+		}
 	}
-	//glm::vec2 steeringVelocity = m_pTarget->getPosition() - m_pUfo->getPosition();
-	//steeringVelocity = Util::normalize(steeringVelocity);
-	//m_pUfo->setVelocity(steeringVelocity);
-//CollisionManager::AABBCheck(m_pUfo, m_pObstacle); //checks to see if collision
+
+	if (m_pUfo->enableAvoid == true)
+	{
+		m_pUfo->Avoid();
+
+		if (CollisionManager::lineRectCheck(m_pUfo->m_leftWhisker.Start(), m_pUfo->m_leftWhisker.End(),
+			(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+		{
+			//SoundManager::Instance().playSound("yay", 0);
+			m_pUfo->turnUfo(); //turn random direction, rotate by small increment each time its colliding but go same way
+		}
+
+		if (CollisionManager::lineRectCheck(m_pUfo->m_rightWhisker.Start(), m_pUfo->m_rightWhisker.End(),
+			(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+		{
+			//SoundManager::Instance().playSound("yay", 0);
+			m_pUfo->turnUfo();
+		}
+
+		if (CollisionManager::lineRectCheck(m_pUfo->m_centerWhisker.Start(), m_pUfo->m_centerWhisker.End(),
+			(m_pObstacle->getTransform()->position - glm::vec2(100.0f, 50.0f)), 200.0f, 100.0f))
+		{
+			//SoundManager::Instance().playSound("yay", 0);
+			m_pUfo->turnUfo();
+		}
+	}
+
 }
 
 void PlayScene::clean()
@@ -77,7 +101,8 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
 		//seek
-		Reset();
+		m_pUfo->Reset();
+		m_pUfo->enableSeek = true;
 		m_pUfo->setEnabled(true);
 		addChild(m_pTarget);
 		SoundManager::Instance().playSound("ufo", 0);
@@ -87,38 +112,37 @@ void PlayScene::handleEvents()
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
 	{
 		//flee
-		Reset();
+		m_pUfo->Reset();
+		m_pUfo->enableFlee = true;
 		m_pUfo->setEnabled(true);
 		addChild(m_pTarget);
 		SoundManager::Instance().playSound("ufo", 0);
-		m_pUfo->getTransform()->position = glm::vec2(100.0f, 200.0f);
-		m_pTarget->getTransform()->position = glm::vec2(200.0f, 150.0f);
-		m_pUfo->setDestination(-m_pTarget->getTransform()->position);
-		
+		m_pUfo->setDestination(m_pUfo->getTransform()->position - m_pTarget->getTransform()->position);
+
+		m_pTarget->getTransform()->position = glm::vec2(300.0f, 400.0f);
 	}
+
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_3))
-	{
-		//arrive
-		Reset();
+	{	
+		m_pUfo->Reset();
+		m_pUfo->enableArrive = true;
 		m_pUfo->setEnabled(true);
 		addChild(m_pTarget);
-
+		SoundManager::Instance().playSound("ufo", 0);
 		m_pUfo->setDestination(m_pTarget->getTransform()->position);
-
-		if (m_pUfo->getTransform()->position == m_pTarget->getTransform()->position)
-		{
-			m_pUfo->setAccelerationRate(0.0f);
-			m_pUfo->setMaxSpeed(0.0f);
-			m_pUfo->setTurnRate(0.0f);
-		}
 	}
+
 	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_4))
 	{
 		//avoid obstacle
-		Reset();
+		m_pUfo->Reset();
+		m_pUfo->enableAvoid = true;
 		m_pUfo->setEnabled(true);
 		addChild(m_pObstacle);
-		m_pUfo->setDestination(m_pObstacle->getTransform()->position);
+		addChild(m_pTarget);
+		SoundManager::Instance().playSound("ufo", 0);
+		m_pUfo->setDestination(m_pTarget->getTransform()->position);
+		
 	}
 }
 
@@ -142,9 +166,9 @@ void PlayScene::start()
 
 	// instantiating spaceship
 	m_pUfo = new Ufo();
-	m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
 	m_pUfo->setEnabled(false);
 	//m_pUfo->setDestination(m_pTarget->getTransform()->position);
+	m_pUfo->getTransform()->position = glm::vec2(100.0f, 300.0f);
 
 	m_pUfo->m_leftWhisker.SetLine(m_pUfo->getTransform()->position,
 		(m_pUfo->getTransform()->position + m_pUfo ->getOrientation() * 100.0f));
@@ -204,18 +228,6 @@ void PlayScene::start()
 	addChild(m_pInstructionsLabel, 2);
 }
 
-void PlayScene::Reset()
-{
-	m_pUfo->getTransform()->position = glm::vec2(200.0f, 200.0f);
-	m_pUfo->setEnabled(false);
-	m_pUfo->getRigidBody()->velocity = glm::vec2(0.0f); //reset velocity
-	m_pUfo->setRotation(0.0f); //reset angle
-	m_pUfo->setTurnRate(5.0f);
-	m_pUfo->setAccelerationRate(2.0f);
-	m_pUfo->setMaxSpeed(10.0f);
-	//m_pUfo->angleInRadians = m_pUfo->getRotation();
-}
-
 void PlayScene::GUI_Function() const
 {
 	// Always open with a NewFrame
@@ -227,7 +239,8 @@ void PlayScene::GUI_Function() const
 
 	ImGui::Begin("GAME 3001 - A1", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
-	static float speed = 10.0f;
+	
+	static float speed = 8.0f;
 	if (ImGui::SliderFloat("MaxSpeed", &speed, 0.0f, 100.0f))
 	{
 		m_pUfo->setMaxSpeed(speed);

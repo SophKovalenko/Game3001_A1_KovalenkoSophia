@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Util.h"
 #include "PlayScene.h"
+#include "EventManager.h"
 
 Ufo::Ufo()
 {
@@ -15,12 +16,13 @@ Ufo::Ufo()
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
+	getRigidBody()->isMoving = true;
 	setType(UFO);
 
-	setMaxSpeed(10.0f);
+	setMaxSpeed(8.0f);
 	setOrientation(glm::vec2(0.0f, -1.0f));
 	setRotation(0.0f);
-	setAccelerationRate(10.0f);
+	setAccelerationRate(5.0f);
 	setTurnRate(10.0f);
 }
 
@@ -47,8 +49,6 @@ void Ufo::update()
 
 	m_centerWhisker.SetLine(getTransform()->position,
 		(getTransform()->position + Util::getOrientation(m_rotationAngle) * 100.0f));
-
-	m_Move();
 }
 
 void Ufo::clean()
@@ -105,26 +105,22 @@ void Ufo::setRightWhisker(glm::vec2 start, glm::vec2 end)
 	m_rightWhisker.SetLine(start, end);
 }
 
-float Ufo::getRotation() const
+void Ufo::Reset()
 {
-	return m_rotationAngle;
+	getTransform()->position = glm::vec2(200.0f, 200.0f);
+	setEnabled(false);
+	getRigidBody()->velocity = glm::vec2(0.0f); //reset velocity
+	setRotation(0.0f); //reset angle
+	setTurnRate(5.0f);
+	setAccelerationRate(2.0f);
+	setMaxSpeed(8.0f);
+	enableSeek = false;
+	enableFlee = false;
+	enableArrive = false;
+	enableAvoid = false;
 }
 
-void Ufo::setRotation(const float angle)
-{
-	m_rotationAngle = angle;
-
-	const auto offset = -90.0f;
-	const auto angle_in_radians = (angle + offset) * Util::Deg2Rad;
-
-	const auto x = cos(angle_in_radians);
-	const auto y = sin(angle_in_radians);
-
-	//convert the angle to a normalized vector and store it in orientation
-	setOrientation(glm::vec2(x, y));
-}
-
-void Ufo::m_Move()
+void Ufo::Seek()
 {
 	auto deltaTime = TheGame::Instance()->getDeltaTime();
 
@@ -150,7 +146,42 @@ void Ufo::m_Move()
 		}
 	}
 
-	//std::cout << "Target Rotation: " << target_rotation << std::endl;*/
+	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+
+	//using the formula pf = pi + vi + 0.5ai*t^2 
+	getRigidBody()->velocity += getOrientation() * (deltaTime)+
+		0.5f * getRigidBody()->acceleration * (deltaTime); // scale our velocity
+
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+
+	getTransform()->position += getRigidBody()->velocity;
+}
+
+void Ufo::Flee()
+{
+	auto deltaTime = TheGame::Instance()->getDeltaTime();
+
+	// direction with magnitude
+	m_targetDirection = m_destination - getTransform()->position;
+
+	// normalized direction
+	m_targetDirection = Util::normalize(m_targetDirection);
+
+	auto target_rotation = Util::signedAngle(getOrientation(), m_targetDirection);
+
+	auto turn_sensitivity = 5.0f;
+
+	if (abs(target_rotation) > turn_sensitivity)
+	{
+		if (target_rotation > 0.0f)
+		{
+			setRotation(getRotation() + getTurnRate());
+		}
+		if (target_rotation < 0.0f)
+		{
+			setRotation(getRotation() - getTurnRate());
+		}
+	}
 
 	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
 
@@ -160,6 +191,107 @@ void Ufo::m_Move()
 
 	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
 
-	getTransform()->position += getRigidBody()->velocity; 
+	getTransform()->position += getRigidBody()->velocity;
+}
+
+void Ufo::Arrive()
+{
+	//arrive
+
+	auto deltaTime = TheGame::Instance()->getDeltaTime();
+
+	// direction with magnitude
+	m_targetDirection = m_destination - getTransform()->position;
+
+	// normalized direction
+	m_targetDirection = Util::normalize(m_targetDirection);
+
+	auto target_rotation = Util::signedAngle(getOrientation(), m_targetDirection);
+
+	auto turn_sensitivity = 5.0f;
+
+	if (abs(target_rotation) > turn_sensitivity)
+	{
+		if (target_rotation > 0.0f)
+		{
+			setRotation(getRotation() + getTurnRate());
+		}
+		if (target_rotation < 0.0f)
+		{
+			setRotation(getRotation() - getTurnRate());
+		}
+	}
+	getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+
+	//using the formula pf = pi + vi + 0.5ai*t^2 
+	getRigidBody()->velocity += getOrientation() * (deltaTime)+
+		0.5f * getRigidBody()->acceleration * (deltaTime); // scale our velocity
+
+	getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+
+	getTransform()->position += getRigidBody()->velocity;
+}
+
+void Ufo::Avoid()
+{
 
 }
+
+float Ufo::getRotation() const
+{
+	return m_rotationAngle;
+}
+
+void Ufo::setRotation(const float angle)
+{
+	m_rotationAngle = angle;
+
+	const auto offset = -90.0f;
+	const auto angle_in_radians = (angle + offset) * Util::Deg2Rad;
+
+	const auto x = cos(angle_in_radians);
+	const auto y = sin(angle_in_radians);
+
+	//convert the angle to a normalized vector and store it in orientation
+	setOrientation(glm::vec2(x, y));
+}
+
+/*void Ufo::m_Move()
+{
+	auto deltaTime = TheGame::Instance()->getDeltaTime();
+
+	// direction with magnitude
+	m_targetDirection = m_destination - getTransform()->position;
+
+	// normalized direction
+	m_targetDirection = Util::normalize(m_targetDirection);
+
+	auto target_rotation = Util::signedAngle(getOrientation(), m_targetDirection);
+
+	auto turn_sensitivity = 5.0f;
+
+	if (abs(target_rotation) > turn_sensitivity)
+	{
+		if (target_rotation > 0.0f)
+		{
+			setRotation(getRotation() + getTurnRate());
+		}
+		if (target_rotation < 0.0f)
+		{
+			setRotation(getRotation() - getTurnRate());
+		}
+	}
+
+	//std::cout << "Target Rotation: " << target_rotation << std::endl;
+
+		getRigidBody()->acceleration = getOrientation() * getAccelerationRate();
+
+		//using the formula pf = pi + vi + 0.5ai*t^2 
+		getRigidBody()->velocity += getOrientation() * (deltaTime)+
+			0.5f * getRigidBody()->acceleration * (deltaTime); // scale our velocity
+
+		getRigidBody()->velocity = Util::clamp(getRigidBody()->velocity, m_maxSpeed);
+
+		getTransform()->position += getRigidBody()->velocity;
+
+}*/
